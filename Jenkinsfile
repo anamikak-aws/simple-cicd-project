@@ -19,7 +19,7 @@ pipeline {
                 sh '''
                     docker stop simple-cicd-container || true
                     docker rm simple-cicd-container || true
-                    docker run -d --name simple-cicd-container -p 8080:80 simple-cicd-website
+                    docker run -d --name simple-cicd-container -p 8081:80 simple-cicd-website
                 '''
             }
         }
