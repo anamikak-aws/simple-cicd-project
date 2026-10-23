@@ -113,11 +113,43 @@ pipeline {
 
     post {
         success {
-            echo 'All 12 stages completed successfully!'
+            echo 'Pipeline completed successfully!'
+
+            emailext(
+                to: 'YOUR_EMAIL@example.com',
+                subject: "SUCCESS: ${JOB_NAME} - Build #${BUILD_NUMBER}",
+                body: """Hello,
+
+Your CI/CD pipeline completed successfully.
+
+Job: ${JOB_NAME}
+Build: #${BUILD_NUMBER}
+Status: ${currentBuild.currentResult}
+
+Build details:
+${BUILD_URL}
+"""
+            )
         }
 
         failure {
-            echo 'Pipeline failed. Check Console Output for the failed stage.'
+            echo 'Pipeline failed. Check Console Output.'
+
+            emailext(
+                to: 'anamika.k.aws@gmail.com',
+                subject: "FAILED: ${JOB_NAME} - Build #${BUILD_NUMBER}",
+                body: """Hello,
+
+Your CI/CD pipeline has failed.
+
+Job: ${JOB_NAME}
+Build: #${BUILD_NUMBER}
+Status: ${currentBuild.currentResult}
+
+Check the Console Output:
+${BUILD_URL}console
+"""
+            )
         }
 
         always {
@@ -125,3 +157,4 @@ pipeline {
         }
     }
 }
+
